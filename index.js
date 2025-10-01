@@ -9,8 +9,10 @@ const SELF_URL = 'https://' + process.env.REPL_SLUG + '.' + process.env.REPL_OWN
 
 // Mini serveur pour Replit
 app.get('/', (req, res) => {
+  console.log(`[${new Date().toISOString()}] 🔔 Reçu un ping sur / de la part de ${req.ip}`);
   res.send('Ping bot is running');
 });
+
 
 app.listen(PORT, () => {
   console.log(`🌐 Mini serveur lancé sur le port ${PORT}`);
