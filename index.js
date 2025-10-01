@@ -4,6 +4,11 @@ import axios from 'axios';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Serveur accessible de l'extérieur
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🌐 Serveur lancé sur le port ${PORT}`);
+});
+
 const SERVER_URL = 'https://rouelment.onrender.com/ping'; // Ton vrai serveur Render
 const SELF_URL = 'https://' + process.env.REPL_SLUG + '.' + process.env.REPL_OWNER + '.repl.co/'; // Auto-ping
 
