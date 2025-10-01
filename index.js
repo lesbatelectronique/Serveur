@@ -1,28 +1,16 @@
-// Import des modules
-const express = require('express');
-const https = require('https');
+import axios from 'axios';
 
-// Création d'un mini serveur web pour empêcher Replit de se mettre en veille
-const app = express();
-app.get('/', (req, res) => res.send('Ping bot is running'));
-app.listen(3000, () => console.log("Mini web server lancé sur le port 3000"));
-
-// URL de ton serveur Render à ping
 const SERVER_URL = 'https://rouelment.onrender.com/ping';
 
-// Fonction de ping avec délai aléatoire
-function pingServer() {
-  https.get(SERVER_URL, (res) => {
-    console.log(`[${new Date().toISOString()}] ✅ Ping réussi: ${res.statusCode}`);
-    scheduleNextPing();
-  }).on('error', (err) => {
+async function pingServer() {
+  try {
+    const res = await axios.get(SERVER_URL);
+    console.log(`[${new Date().toISOString()}] ✅ Ping réussi: ${res.status}`);
+  } catch (err) {
     console.error(`[${new Date().toISOString()}] ❌ Erreur de ping:`, err.message);
-    scheduleNextPing();
-  });
-}
+  }
 
-function scheduleNextPing() {
-  const delay = Math.floor(Math.random() * (7 - 2 + 1) + 2) * 60 * 1000; // 2-7 minutes
+  const delay = Math.floor(Math.random() * (7 - 2 + 1) + 2) * 60 * 1000;
   console.log(`🕒 Prochain ping dans ${(delay / 60000).toFixed(1)} minutes...\n`);
   setTimeout(pingServer, delay);
 }
