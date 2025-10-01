@@ -31,12 +31,13 @@ async function pingRender() {
 // Fonction ping Replit (self)
 async function pingSelf() {
   try {
-    await axios.get(SELF_URL);
-    console.log(`[${new Date().toISOString()}] 🔁 Auto-ping Replit OK`);
+    const res = await axios.get(SELF_URL);
+    console.log(`[${new Date().toISOString()}] 🔁 Auto-ping Replit OK - status: ${res.status}`);
   } catch (err) {
     console.error(`[${new Date().toISOString()}] ⚠️ Auto-ping Replit échoué:`, err.message);
   }
 }
+
 
 // Boucle de ping
 async function loop() {
