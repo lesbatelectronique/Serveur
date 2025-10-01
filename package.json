@@ -1,32 +1,21 @@
 {
-  "name": "ping-serveur",
+  "name": "ping-render",
   "version": "1.0.0",
-  "description": "Serveur Express pour pinger serveur",
+  "description": "Serveur Node.js avec ping entre serveurs pour keep-alive",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "dev": "node index.js"
+    "start": "node index.js"
   },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
   "dependencies": {
-  "axios": "^1.6.8",
+    "axios": "^1.4.0",
     "cors": "^2.8.5",
-    "express": "^4.19.2",
+    "express": "^4.18.2",
+    "firebase-admin": "^11.10.1",
     "sanitize-filename": "^1.6.3",
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.0"
-  },
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "keywords": [
-    "express",
-    "socket.io",
-    "file-upload",
-    "multer",
-    "downloads"
-  ],
-  "author": "Zakaria",
-  "license": "MIT"
+    "socket.io": "^4.7.2"
+  }
 }
