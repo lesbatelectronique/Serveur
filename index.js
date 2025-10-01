@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 5000;
 const SERVER_URL = 'https://rouelment.onrender.com/ping'; // Remplace si nécessaire
 
 // Route principale
-app.get('/', (req, res) => {
+app.get('/ping', (req, res) => {
   console.log(`[${new Date().toISOString()}] 🔔 Reçu un ping sur / de ${req.ip}`);
   res.send('Ping bot is running');
 });
