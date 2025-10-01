@@ -1,41 +1,54 @@
 import express from 'express';
 import axios from 'axios';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 
 const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer, { cors: { origin: "*" } });
+
 const PORT = process.env.PORT || 5000;
+const SERVER_URL = 'https://rouelment.onrender.com/ping'; // À adapter
 
-// URL du serveur Render à ping
-const SERVER_URL = 'https://rouelment.onrender.com/ping'; // Remplace si nécessaire
-
-// Route principale
+// Route de test
 app.get('/ping', (req, res) => {
-  console.log(`[${new Date().toISOString()}] 🔔 Reçu un ping sur / de ${req.ip}`);
+  const msg = `[${new Date().toISOString()}] 🔔 Reçu un ping de ${req.ip}`;
+  console.log(msg);
+  io.emit('pingStatus', msg);
   res.send('Ping bot is running');
 });
 
-// Lancement du serveur
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🌐 Serveur lancé sur le port ${PORT}`);
-});
-
-// Fonction pour ping un autre serveur Render
+// Fonction de ping
 async function pingRender() {
   try {
     const res = await axios.get(SERVER_URL);
-    console.log(`[${new Date().toISOString()}] ✅ Ping envoyé à ${SERVER_URL} - Status: ${res.status}`);
+    const msg = `[${new Date().toISOString()}] ✅ Ping envoyé à ${SERVER_URL} - Status: ${res.status}`;
+    console.log(msg);
+    io.emit('pingStatus', msg);
   } catch (err) {
-    console.error(`[${new Date().toISOString()}] ❌ Erreur lors du ping: ${err.message}`);
+    const msg = `[${new Date().toISOString()}] ❌ Erreur ping: ${err.message}`;
+    console.error(msg);
+    io.emit('pingStatus', msg);
   }
 }
 
-// Boucle de ping régulière
+// Boucle de ping
 async function loop() {
   await pingRender();
-  
   const delay = Math.floor(Math.random() * (7 - 2 + 1) + 2) * 60 * 1000;
-  console.log(`🕒 Prochain ping dans ${(delay / 60000).toFixed(1)} minutes...\n`);
+  const msg = `🕒 Prochain ping dans ${(delay / 60000).toFixed(1)} minutes...\n`;
+  console.log(msg);
+  io.emit('pingStatus', msg);
   setTimeout(loop, delay);
 }
 
-// Démarrage
-loop();
+// Route pour voir le dashboard
+app.get('/', (req, res) => {
+  res.sendFile(new URL('./dashboard.html', import.meta.url).pathname);
+});
+
+// Lancement
+httpServer.listen(PORT, () => {
+  console.log(`🌐 Serveur lancé sur le port ${PORT}`);
+  loop();
+});
