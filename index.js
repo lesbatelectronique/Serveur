@@ -1,4 +1,16 @@
+import express from 'express';
 import axios from 'axios';
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Mini serveur pour garder Replit actif
+app.get('/', (req, res) => {
+  res.send('Ping bot is running');
+});
+app.listen(PORT, () => {
+  console.log(`🌐 Mini serveur lancé sur le port ${PORT}`);
+});
 
 const SERVER_URL = 'https://rouelment.onrender.com/ping';
 
