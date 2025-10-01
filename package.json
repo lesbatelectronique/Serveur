@@ -1,0 +1,12 @@
+{
+  "name": "ping-render",
+  "version": "1.0.0",
+  "description": "Script Node.js pour garder un serveur Render actif",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
