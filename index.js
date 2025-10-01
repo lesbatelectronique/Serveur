@@ -4,27 +4,46 @@ import axios from 'axios';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Mini serveur pour garder Replit actif
+const SERVER_URL = 'https://rouelment.onrender.com/ping'; // Ton vrai serveur Render
+const SELF_URL = 'https://' + process.env.REPL_SLUG + '.' + process.env.REPL_OWNER + '.repl.co/'; // Auto-ping
+
+// Mini serveur pour Replit
 app.get('/', (req, res) => {
   res.send('Ping bot is running');
 });
+
 app.listen(PORT, () => {
   console.log(`🌐 Mini serveur lancé sur le port ${PORT}`);
 });
 
-const SERVER_URL = 'https://rouelment.onrender.com/ping';
-
-async function pingServer() {
+// Fonction ping Render
+async function pingRender() {
   try {
     const res = await axios.get(SERVER_URL);
-    console.log(`[${new Date().toISOString()}] ✅ Ping réussi: ${res.status}`);
+    console.log(`[${new Date().toISOString()}] ✅ Ping Render: ${res.status}`);
   } catch (err) {
-    console.error(`[${new Date().toISOString()}] ❌ Erreur de ping:`, err.message);
+    console.error(`[${new Date().toISOString()}] ❌ Erreur ping Render:`, err.message);
   }
+}
+
+// Fonction ping Replit (self)
+async function pingSelf() {
+  try {
+    await axios.get(SELF_URL);
+    console.log(`[${new Date().toISOString()}] 🔁 Auto-ping Replit OK`);
+  } catch (err) {
+    console.error(`[${new Date().toISOString()}] ⚠️ Auto-ping Replit échoué:`, err.message);
+  }
+}
+
+// Boucle de ping
+async function loop() {
+  await pingRender();
+  await pingSelf();
 
   const delay = Math.floor(Math.random() * (7 - 2 + 1) + 2) * 60 * 1000;
   console.log(`🕒 Prochain ping dans ${(delay / 60000).toFixed(1)} minutes...\n`);
-  setTimeout(pingServer, delay);
+  setTimeout(loop, delay);
 }
 
-pingServer();
+loop();
