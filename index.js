@@ -8,7 +8,7 @@ app.get('/', (req, res) => res.send('Ping bot is running'));
 app.listen(3000, () => console.log("Mini web server lancé sur le port 3000"));
 
 // URL de ton serveur Render à ping
-const SERVER_URL = 'https://rouelment.onrender.com/api/ping'; // ← remplace par une vraie route
+const SERVER_URL = 'https://rouelment.onrender.com/ping';
 
 // Fonction de ping avec délai aléatoire
 function pingServer() {
